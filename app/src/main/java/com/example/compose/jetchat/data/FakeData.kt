@@ -19,6 +19,8 @@ package com.example.compose.jetchat.data
 import com.example.compose.jetchat.R
 import com.example.compose.jetchat.conversation.ConversationUiState
 import com.example.compose.jetchat.conversation.Message
+//import com.example.compose.jetchat..ConversationUiState
+//import com.example.compose.jetchat.conversation.Message
 import com.example.compose.jetchat.profile.ProfileScreenState
 
 private val initialMessages = listOf(

@@ -3,15 +3,18 @@ package com.example.compose.jetchat
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
+import androidx.compose.ui.viewinterop.AndroidViewBinding
 import androidx.core.view.WindowCompat
-import com.example.compose.jetchat.components.JetchatScaffold
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import com.example.compose.jetchat.components.JetChatScaffold
 import com.example.compose.jetchat.conversation.BackPressHandler
 import com.example.compose.jetchat.conversation.LocalBackPressedDispatcher
+import com.example.compose.jetchat.databinding.ContentMainBinding
 import com.google.accompanist.insets.ProvideWindowInsets
 import kotlinx.coroutines.launch
 
@@ -22,6 +25,8 @@ import kotlinx.coroutines.launch
  */
 class NavActivity : AppCompatActivity() {
 
+    private val viewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -29,17 +34,16 @@ class NavActivity : AppCompatActivity() {
             //透传onBackPressed类
             ProvideWindowInsets(consumeWindowInsets = false) {
                 CompositionLocalProvider(LocalBackPressedDispatcher provides this.onBackPressedDispatcher) {
-
                     //draw snackBar
                     val scaffoldState = rememberScaffoldState()
-                    val drawerOpen = true
-
+                    //① 转换为状态流
+                    val drawerOpen by viewModel.drawerShouldBeOpened.collectAsState()
                     if (drawerOpen) {
                         // Open drawer and reset state in VM.
-                        LaunchedEffect(Unit){
+                        LaunchedEffect(Unit) {
                             scaffoldState.drawerState.open()
+                            viewModel.resetOpenDrawerAction()
                         }
-
                     }
                     // Open drawer and reset state in VM.
                     val scope = rememberCoroutineScope()
@@ -50,15 +54,28 @@ class NavActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    //
-                    JetchatScaffold(
-                        scaffoldState
-
-                    )
+                    JetChatScaffold(
+                        scaffoldState,
+                        onChatClicked = {},
+                        onProfileClicked = {}
+                    ) {
+                        AndroidViewBinding(ContentMainBinding::inflate)
+                    }
 
                 }
             }
         }
+    }
+
+
+    override fun onSupportNavigateUp(): Boolean {
+        return findNavController().navigateUp() || super.onSupportNavigateUp()
+    }
+
+    private fun findNavController(): NavController {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        return navHostFragment.navController
     }
 
 }

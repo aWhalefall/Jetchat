@@ -19,6 +19,7 @@ import com.example.compose.jetchat.buildsrc.Libs
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
@@ -112,6 +113,7 @@ dependencies {
     implementation Libs.AndroidX.Compose.viewBinding
 
     implementation Libs.Accompanist.insets
+    implementation 'androidx.core:core-ktx:+'
 
     debugImplementation Libs.AndroidX.Compose.uiTestManifest
 
