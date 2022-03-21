@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.viewinterop.AndroidViewBinding
+import androidx.core.os.bundleOf
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -27,8 +28,9 @@ class NavActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             //透传onBackPressed类
@@ -56,8 +58,19 @@ class NavActivity : AppCompatActivity() {
                     }
                     JetChatScaffold(
                         scaffoldState,
-                        onChatClicked = {},
-                        onProfileClicked = {}
+                        onChatClicked = {
+                            findNavController().popBackStack(R.id.nav_home, true)
+                            scope.launch {
+                                scaffoldState.drawerState.close()
+                            }
+                        },
+                        onProfileClicked = {
+                            val bundle = bundleOf("userId" to it)
+                            findNavController().navigate(R.id.nav_profile,bundle)
+                            scope.launch {
+                                scaffoldState.drawerState.close()
+                            }
+                        }
                     ) {
                         AndroidViewBinding(ContentMainBinding::inflate)
                     }

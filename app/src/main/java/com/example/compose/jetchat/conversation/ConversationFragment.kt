@@ -22,6 +22,8 @@ import com.example.compose.jetchat.theme.JetchatTheme
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.ViewWindowInsetObserver
 import com.google.accompanist.insets.navigationBarsPadding
+import android.view.ViewGroup.LayoutParams
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 
 /**
  * author：yangweichao@reworldgame.com
@@ -37,9 +39,9 @@ class ConversationFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = ComposeView(inflater.context).apply {
-        layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
+        layoutParams = LayoutParams(
+            MATCH_PARENT,
+            MATCH_PARENT
         )
         //使用这个视图创建一个 ViewWindowInsetObserver，然后调用 start() 开始监听。
         // 返回 WindowInsets 实例，允许我们在下面的内容中将其提供给 AmbientWindowInsets

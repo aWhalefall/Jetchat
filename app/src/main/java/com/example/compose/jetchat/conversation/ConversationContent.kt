@@ -1,6 +1,5 @@
 package com.example.compose.jetchat.conversation
 
-import androidx.compose.animation.core.animateOffsetAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.border
@@ -19,9 +18,7 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.BlendMode.Companion.Color
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.LastBaseline
@@ -67,30 +64,31 @@ fun ConversationContent(
     val scope = rememberCoroutineScope()
 
     Surface(modifier = modifier) {
-        Box(modifier = Modifier.fillMaxSize())
-        Column(Modifier.fillMaxSize()) {
-            Messages(
-                messages = uiState.messages,
-                navigateToProfile = navigateToProfile,
-                scrollState = scrollState,
-                modifier = Modifier.weight(1f)
-            )
-            //UserInput()
-        }
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(Modifier.fillMaxSize()) {
+                Messages(
+                    messages = uiState.messages,
+                    navigateToProfile = navigateToProfile,
+                    modifier = Modifier.weight(1f),
+                    scrollState = scrollState
+                )
+                // UserInput()
+            }
 
-        // Channel name bar floats above the messages
-        ChannelNameBar(
-            channelName = uiState.channelName,
-            channelMembers = uiState.channelMembers, onNavIconPressed = onNavIconPressed,
-            modifier = Modifier.statusBarsPadding()
-        )
+            // Channel name bar floats above the messages
+            ChannelNameBar(
+                channelName = uiState.channelName,
+                channelMembers = uiState.channelMembers, onNavIconPressed = onNavIconPressed,
+                modifier = Modifier.statusBarsPadding()
+            )
+        }
 
     }
 }
 
 @Composable
 fun UserInput() {
-    TODO("Not yet implemented")
+    // TODO("Not yet implemented")
 }
 
 const val ConversationTestTag = "ConversationTestTag"
@@ -99,8 +97,8 @@ const val ConversationTestTag = "ConversationTestTag"
 fun Messages(
     messages: List<Message>,
     navigateToProfile: (String) -> Unit,
-    scrollState: LazyListState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    scrollState: LazyListState
 ) {
     val scope = rememberCoroutineScope()
     Box(modifier = modifier) {
@@ -267,7 +265,9 @@ fun AuthorNameTimesStamp(msg: Message) {
 }
 
 @Composable
-fun ChatItemBubble(msg: Message, lastMessageByAuthor: Boolean, authorClicked: (String) -> Unit) {
+fun ChatItemBubble(msg: Message,
+                   lastMessageByAuthor: Boolean,
+                   authorClicked: (String) -> Unit) {
     val backgroundBubbleColor = if (MaterialTheme.colors.isLight) {
         Color(0xFFF5F5F5)
     } else {
@@ -278,7 +278,18 @@ fun ChatItemBubble(msg: Message, lastMessageByAuthor: Boolean, authorClicked: (S
 
     Column {
         Surface(color = backgroundBubbleColor, shape = bubbleShape) {
-            //ClickableMessage()
+            ClickableMessage(messages = msg, authorClicked = authorClicked)
+        }
+    }
+    msg.image?.let {
+        Spacer(modifier = Modifier.padding(4.dp))
+        Surface(color = backgroundBubbleColor, shape = bubbleShape) {
+            Image(
+                painter = painterResource(id = it),
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.size(160.dp),
+                contentDescription = stringResource(id = R.string.attached_image)
+            )
         }
     }
 

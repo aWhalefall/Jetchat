@@ -22,7 +22,10 @@ import com.example.compose.jetchat.theme.JetchatTheme
 import com.google.accompanist.insets.statusBarsHeight
 
 @Composable
-fun ColumnScope.JetChatDrawer(onProfileClicked: (String) -> Unit, onChatClicked: (String) -> Unit) {
+fun ColumnScope.JetChatDrawer(
+    onProfileClicked: (String) -> Unit,
+    onChatClicked: (String) -> Unit
+) {
 
     Spacer(modifier = Modifier.statusBarsHeight())
     DrawerHeader()
@@ -40,14 +43,15 @@ fun ColumnScope.JetChatDrawer(onProfileClicked: (String) -> Unit, onChatClicked:
 }
 
 @Composable
-fun ProfileItem(text: String, profilePic: Int?, onProfileClicked: (String) -> Unit) {
+fun ProfileItem(text: String, profilePic: Int?, onProfileClicked: () -> Unit) {
     Row(
         modifier = Modifier
             .height(48.dp)
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 4.dp)
             .clip(MaterialTheme.shapes.medium)
-            .clickable { onProfileClicked }, verticalAlignment = Alignment.CenterVertically
+            .clickable(onClick = onProfileClicked),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             val widthPaddingModifier = Modifier
@@ -75,7 +79,7 @@ fun ProfileItem(text: String, profilePic: Int?, onProfileClicked: (String) -> Un
 }
 
 @Composable
-fun ChatItem(text: String, selected: Boolean, onChatClicked: (String) -> Unit) {
+fun ChatItem(text: String, selected: Boolean, onChatClicked: () -> Unit) {
 
     val background = if (selected) {
         Modifier.background(MaterialTheme.colors.primary.copy(alpha = 0.08f))
@@ -89,7 +93,7 @@ fun ChatItem(text: String, selected: Boolean, onChatClicked: (String) -> Unit) {
             .padding(horizontal = 8.dp, vertical = 4.dp)
             .then(background)
             .clip(MaterialTheme.shapes.medium)
-            .clickable { onChatClicked }, verticalAlignment = Alignment.CenterVertically
+            .clickable(onClick = onChatClicked), verticalAlignment = Alignment.CenterVertically
     ) {
         val iconTint = if (selected) {
             MaterialTheme.colors.primary
