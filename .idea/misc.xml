@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/202110/compose-samples-main/compose-samples-main/week2/app/src/main/java/com/example/compose/jetchat/components/JetchatDrawer.kt" value="0.2722222222222222" />
+        <entry key="..\:/202110/compose-samples-main/compose-samples-main/week2/app/src/main/java/com/example/compose/jetchat/conversation/Conversation.kt" value="0.5861767279090113" />
         <entry key="..\:/202110/compose-samples-main/compose-samples-main/week2/app/src/main/java/com/example/compose/jetchat/conversation/ConversationContent.kt" value="0.22" />
         <entry key="..\:/202110/compose-samples-main/compose-samples-main/week2/app/src/main/java/com/example/compose/jetchat/conversation/JumpToBottom.kt" value="0.6844547563805105" />
+        <entry key="..\:/202110/compose-samples-main/compose-samples-main/week2/app/src/main/java/com/example/compose/jetchat/conversation/UserInput.kt" value="0.3111111111111111" />
         <entry key="..\:/202110/compose-samples-main/compose-samples-main/week2/app/src/main/java/com/example/compose/jetchat/profile/Profile.kt" value="0.25" />
         <entry key="..\:/202110/compose-samples-main/compose-samples-main/week2/app/src/main/res/layout/content_main.xml" value="0.19444444444444445" />
         <entry key="..\:/202110/compose-samples-main/compose-samples-main/week2/app/src/main/res/menu/activity_main_drawer.xml" value="0.31614583333333335" />

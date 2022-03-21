@@ -37,6 +37,7 @@ import com.example.compose.jetchat.data.exampleUiState
 import com.example.compose.jetchat.theme.JetchatTheme
 import com.example.compose.jetchat.theme.elevatedSurface
 import com.google.accompanist.insets.LocalWindowInsets
+import com.google.accompanist.insets.navigationBarsWithImePadding
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.insets.statusBarsPadding
 import kotlinx.coroutines.launch
@@ -72,7 +73,16 @@ fun ConversationContent(
                     modifier = Modifier.weight(1f),
                     scrollState = scrollState
                 )
-                // UserInput()
+                UserInput(onMessageSent = { content ->
+                    uiState.addMessage(Message(authorMe, content, timeNow))
+                }, resetScroll = {
+                    scope.launch {
+                        scrollState.scrollToItem(0)
+                    }
+                },
+                    //使用 navigationBarsWithImePadding() 将输入面板移动到导航栏和屏幕键盘 (IME) 上方
+                    modifier = Modifier.navigationBarsWithImePadding()
+                )
             }
 
             // Channel name bar floats above the messages
@@ -265,9 +275,11 @@ fun AuthorNameTimesStamp(msg: Message) {
 }
 
 @Composable
-fun ChatItemBubble(msg: Message,
-                   lastMessageByAuthor: Boolean,
-                   authorClicked: (String) -> Unit) {
+fun ChatItemBubble(
+    msg: Message,
+    lastMessageByAuthor: Boolean,
+    authorClicked: (String) -> Unit
+) {
     val backgroundBubbleColor = if (MaterialTheme.colors.isLight) {
         Color(0xFFF5F5F5)
     } else {
